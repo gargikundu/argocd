@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mytomcat-project
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+    - targetport:8080
+  selector:
+    app: mytomcat-project
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mytomcat-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mytomcat-project
+  template:
+    metadata:
+      labels:
+        app: mytomcat-project
+    spec:
+      containers:
+        - name: mytomcat
+          image: gargidola/mytomcat:latest
+          ports:
+            - containerPort: 8080
